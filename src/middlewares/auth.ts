@@ -1,21 +1,24 @@
 import { NextFunction, Request, Response } from "express";
+import jwt, { JwtPayload } from "jsonwebtoken";
 
-export const authMiddleware = (
+export const authenticateUser = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const { token } = req.query;
   try {
-    if (token !== "abc") {
-      res.status(401).json({
-        status: 401,
-        message: "Unauthorized user, Please login again!",
-      });
-    } else {
-      next();
+    const { token } = req.cookies;
+    console.log(token);
+
+    if (!token) {
+      throw new Error("Authentication failed");
     }
+    const { _id } = jwt.verify(token, process.env.JWT_SECRET) as JwtPayload;
+    _id && (req.userId = _id);
+    next();
   } catch (error) {
-    res.status(500).send(error);
+    res.status(401).json({
+      error: error.message ? error.message : "Something went wrong!",
+    });
   }
 };
