@@ -6,6 +6,10 @@ export interface UserSchemaType {
   email: string;
   age: number;
   gender: string;
+  dateOfBirth: Date;
+  designation: string;
+  skills: string[];
+  about: string;
   password: string;
 }
 

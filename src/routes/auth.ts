@@ -8,8 +8,7 @@ const router = express.Router();
 
 router.post("/signup", async (req: Request, res: Response) => {
   try {
-    const hashedPassword = await bcrypt.hash(req.body.password, 8);
-    const user = new UserModel({ ...req.body, password: hashedPassword });
+    const user = new UserModel({ ...req.body });
     validateSignup(req);
     let newUser = await user.save();
     const token = jwt.sign({ _id: newUser._id }, process.env.JWT_SECRET);
