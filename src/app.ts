@@ -1,16 +1,27 @@
 import express from "express";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 import { connectToDB } from "./config/database";
 import { router as authRouter } from "./routes/auth";
 import { router as connectionRouter } from "./routes/connection";
+import { router as feedRouter } from "./routes/feed";
 const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 
 // API Routes
 app.use("/api/auth", authRouter);
 app.use("/api/connection", connectionRouter);
+app.use("/api", feedRouter);
 
 connectToDB()
   .then(() => {

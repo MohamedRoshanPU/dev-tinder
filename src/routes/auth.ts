@@ -16,6 +16,13 @@ router.post("/signup", async (req: Request, res: Response) => {
     res.json({
       status: 200,
       message: "User Saved Successfully",
+      data: {
+        token,
+        id: newUser._id,
+        firstName: newUser.firstName,
+        lastName: newUser.lastName,
+        email: newUser.email,
+      },
     });
   } catch (error) {
     res.status(400).json({
@@ -39,6 +46,13 @@ router.post("/login", async (req: Request, res: Response) => {
     res.cookie("token", token);
     res.json({
       message: "Login successfull",
+      data: {
+        token,
+        id: user._id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+      },
     });
   } catch (error) {
     res.status(400).json({

@@ -8,7 +8,6 @@ export const authenticateUser = async (
 ) => {
   try {
     const { token } = req.cookies;
-    console.log(token);
 
     if (!token) {
       throw new Error("Authentication failed");
